@@ -1,62 +1,61 @@
-import i18Obj from './translation.js'
+import i18Obj from "./translation.js";
 
-const languageSwitcher = document.querySelector('.language-switcher')
-const switcherEnglish = document.querySelector('.language-switcher_en')
-const switcherRussian = document.querySelector('.language-switcher_ru')
-const switchersArr = [switcherEnglish, switcherRussian]
-const defaultLanguage = 'en'
-const currentLanguage = localStorage.getItem('language') !== null ?
-  localStorage.getItem('language') :
-  defaultLanguage
+const languageSwitcher = document.querySelector(".language-switcher");
+const switcherEnglish = document.querySelector(".language-switcher_en");
+const switcherRussian = document.querySelector(".language-switcher_ru");
+const switchersArr = [switcherEnglish, switcherRussian];
+const defaultLanguage = "en";
+const currentLanguage =
+  localStorage.getItem("language") !== null
+    ? localStorage.getItem("language")
+    : defaultLanguage;
 
-window.addEventListener("unload", getTranslate(currentLanguage))
+window.addEventListener("unload", getTranslate(currentLanguage));
 
 function changeActiveLanguageLink(language) {
-  let regexp = new RegExp(`_${language}`)
+  let regexp = new RegExp(`_${language}`);
 
-  switchersArr.forEach(switcher => {
+  switchersArr.forEach((switcher) => {
     if (!regexp.test(switcher.classList)) {
-      if (switcher.classList.contains('active-link')) {
-        switcher.classList.remove('active-link')
+      if (switcher.classList.contains("active-link")) {
+        switcher.classList.remove("active-link");
       }
     } else {
-      if (!switcher.classList.contains('active-link')) {
-        switcher.classList.add('active-link')
+      if (!switcher.classList.contains("active-link")) {
+        switcher.classList.add("active-link");
       }
     }
-  })
+  });
 }
-
 
 function getTranslate(language) {
-  const wordsForTranslationArr = document.querySelectorAll('[data-i18]')
+  const wordsForTranslationArr = document.querySelectorAll("[data-i18]");
 
-  wordsForTranslationArr.forEach(word => {
+  wordsForTranslationArr.forEach((word) => {
     Object.entries(i18Obj[language]).forEach(([key, value]) => {
       if (word.dataset.i18 === key) {
-        word.textContent = value
+        word.textContent = value;
         if (word.placeholder) {
-          word.placeholder = value
-          word.value = ''
+          word.placeholder = value;
+          word.value = "";
         }
       }
-    })
-  })
+    });
+  });
 
-  changeActiveLanguageLink(language)
+  changeActiveLanguageLink(language);
 }
 
-
 function manualSwitchLanguage(event) {
-  const target = event.target
+  const target = event.target;
 
   if (target === switcherEnglish) {
-    getTranslate('en')
-    localStorage.setItem('language', 'en')
+    getTranslate("en");
+    localStorage.setItem("language", "en");
   } else if (target === switcherRussian) {
-    getTranslate('ru')
-    localStorage.setItem('language', 'ru')
+    getTranslate("ru");
+    localStorage.setItem("language", "ru");
   }
 }
 
-languageSwitcher.addEventListener('click', manualSwitchLanguage)
+languageSwitcher.addEventListener("click", manualSwitchLanguage);
